@@ -4,14 +4,22 @@ setlocal EnableDelayedExpansion
 chcp 65001 >nul
 
 :: ========================================================
-:: Lock the working directory to the folder that contains
-:: this batch file. cd /d also supports switching drives.
+:: Share the folder passed by the context menu. If no folder
+:: is passed, share the folder that contains this batch file.
 :: ========================================================
-cd /d "%~dp0"
+if not "%~1"=="" (
+    if exist "%~1\" (
+        cd /d "%~1"
+    ) else (
+        cd /d "%~dp1"
+    )
+) else (
+    cd /d "%~dp0"
+)
 set "PORT=8000"
 
 echo ========================================================
-echo        Python File Share Server (Current Folder)
+echo        Python File Share Server (Selected Folder)
 echo ========================================================
 echo.
 
